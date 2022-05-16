@@ -21,18 +21,23 @@ class cadastro_produtoState extends State<cadastro_produto> {
     'Industrial',
     'Em poder de Terceiros'
   ];
+  List<String> unidades_Medida = [
+    'kg',
+    'Unid.',
+    'pc',
+  ];
 
   final TextEditingController _codigo_produto = TextEditingController();
   final TextEditingController _descricao_produto = TextEditingController();
   final TextEditingController _quantida_produto = TextEditingController();
 
   String? local_produto;
+  String? unidade_Produto;
 
   void limpaCampos() {
     _codigo_produto.clear();
     _descricao_produto.clear();
     _quantida_produto.clear();
-    local_produto = null;
   }
 
   @override
@@ -92,6 +97,35 @@ class cadastro_produtoState extends State<cadastro_produto> {
                   ),
                   items: [
                     DropdownMenuItem(
+                        child: Text(unidades_Medida[0]), value: unidades_Medida[0]),
+                    DropdownMenuItem(
+                        child: Text(unidades_Medida[1]), value: unidades_Medida[1]),
+                    DropdownMenuItem(
+                        child: Text(unidades_Medida[2]), value: localizacoes[2]),
+                    ],
+                  onChanged: (value) => setState(() {
+                    unidade_Produto = value;
+                  }),
+                  hint: const Text('Selecione a Unidade'),
+                  style: const TextStyle(
+                    fontSize: 24.0,
+                    color: Colors.black,
+                  ),
+                  icon: const Icon(Icons.add_circle_outline_sharp),
+                ),
+              ),
+            ),Padding(
+              padding: const EdgeInsets.only(top: 8.0),
+              child: SizedBox(
+                width: double.maxFinite,
+                child: DropdownButtonFormField<String>(
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(6),
+                    ),
+                  ),
+                  items: [
+                    DropdownMenuItem(
                         child: Text(localizacoes[0]), value: localizacoes[0]),
                     DropdownMenuItem(
                         child: Text(localizacoes[1]), value: localizacoes[1]),
@@ -123,8 +157,9 @@ class cadastro_produtoState extends State<cadastro_produto> {
                     final int? qtdProduto =
                         int.tryParse(_quantida_produto.text);
                     final String localProduto = local_produto.toString();
+                    final String unidMedida = unidade_Produto.toString();
                     final Produto novoProduto = Produto(
-                        codProduto, descProduto, qtdProduto!, localProduto);
+                        codProduto, descProduto, qtdProduto!, localProduto, unidMedida);
                     Navigator.pop(context, novoProduto);
                   },
                   style: ElevatedButton.styleFrom(
